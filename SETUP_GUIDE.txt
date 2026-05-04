@@ -1,0 +1,267 @@
+╔══════════════════════════════════════════════════════════════╗
+║        PORTFOLIO PROJECT — VS CODE SETUP GUIDE              ║
+║        Complete step-by-step for first-time setup           ║
+╚══════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ BEFORE YOU START — Install these if not already done
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Node.js  →  https://nodejs.org  (download LTS version — 20.x)
+   Verify:     Open any terminal → type:  node --version
+               Should show:  v20.x.x
+
+2. VS Code  →  https://code.visualstudio.com
+   (you already have this if you're reading this)
+
+3. MongoDB Atlas account (FREE) → https://cloud.mongodb.com
+   (takes 3 minutes — needed for the database)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 1 — Extract the ZIP and Open in VS Code
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Extract the ZIP file anywhere on your computer
+   Example:  C:\Projects\portfolio-project\
+             OR  ~/Desktop/portfolio-project/
+
+2. Open VS Code
+
+3. Click:  File → Open Folder
+   Select the extracted folder:  portfolio-project/
+
+4. You should see this structure in the VS Code Explorer panel:
+   ┌─ portfolio-project/
+   ├── backend/
+   ├── frontend/
+   ├── package.json
+   ├── .gitignore
+   ├── README.md
+   ├── DEPLOYMENT.md
+   └── SETUP_GUIDE.txt  ← (this file)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 2 — Set Up MongoDB Atlas (Free Database)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. Go to  https://cloud.mongodb.com  → Sign Up / Login
+
+2. Click "Create a deployment" → Choose M0 FREE → Click "Create"
+
+3. In the setup popup:
+   - Username: portfolioUser
+   - Password: Click "Autogenerate Secure Password"
+   - COPY this password somewhere — you'll need it!
+   - Click "Create Database User"
+
+4. Under "Where would you like to connect from?"
+   → Select "My Local Environment"
+   → Click "Add My Current IP Address"
+   → Click "Finish and Close"
+
+5. On the main Clusters page:
+   → Click "Connect" on your cluster
+   → Click "Drivers"
+   → Select: Driver = Node.js, Version = 5.5 or later
+   → COPY the connection string shown. Looks like:
+     mongodb+srv://portfolioUser:<password>@cluster0.xxxxx.mongodb.net/
+
+6. Replace <password> in that string with the password you copied
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 3 — Configure the Backend .env File
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. In VS Code, open:  backend/.env
+
+2. Find this line:
+   MONGO_URI=mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@cluster0.xxxxx.mongodb.net/portfolio?retryWrites=true&w=majority
+
+3. Replace it with YOUR connection string from Atlas + add /portfolio at the end:
+   MONGO_URI=mongodb+srv://portfolioUser:YourActualPassword@cluster0.abc12.mongodb.net/portfolio?retryWrites=true&w=majority
+
+4. Save the file (Ctrl+S)
+
+   ⚠️  Everything else in .env is already set for local development.
+       You do NOT need to change anything else to run locally.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 4 — Install Dependencies
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Open VS Code Terminal:  View → Terminal  (or press Ctrl + ` )
+
+You need to run npm install in TWO folders.
+
+─── Terminal 1: Install Backend ───
+   cd backend
+   npm install
+
+   Wait for it to finish. You'll see:  added XXX packages
+
+─── Terminal 2: Install Frontend ───
+   Open a new terminal tab (click the + icon in the terminal panel)
+
+   cd frontend
+   npm install
+
+   Wait for it to finish. You'll see:  added XXX packages
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 5 — Seed the Database (Load Sample Data)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+In the BACKEND terminal (the one where you're in the backend/ folder):
+
+   node scripts/seed.js
+
+You should see output like:
+   ✅ Connected to MongoDB
+   👤 Creating admin user...
+   📦 Seeding projects...
+   🏆 Seeding achievements...
+   📚 Seeding workshops...
+   ✉️  Seeding contacts...
+   ✅ Database seeded successfully!
+   Admin credentials:
+     Email:    admin@portfolio.dev
+     Password: Admin@123
+
+If you see any error → double-check your MONGO_URI in backend/.env
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 6 — Run the Project
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+You need TWO terminals running at the same time.
+
+─── Terminal 1: Start Backend ───────────────────
+   (Make sure you are in the backend/ folder)
+   npm run dev
+
+   You should see:
+   🚀 Portfolio API Server running:
+      Local:   http://localhost:5000
+      Health:  http://localhost:5000/health
+
+─── Terminal 2: Start Frontend ──────────────────
+   (Open a new terminal, make sure you are in frontend/ folder)
+   npm run dev
+
+   You should see:
+   VITE v5.x.x  ready in XXX ms
+   ➜  Local:   http://localhost:3000/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ STEP 7 — Open in Browser
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Portfolio website →  http://localhost:3000
+API health check  →  http://localhost:5000/health
+
+To view Admin Dashboard:
+1. Go to  http://localhost:3000
+2. Click "Admin" in the navigation bar
+3. Login with:
+   Email:     admin@portfolio.dev
+   Password:  Admin@123
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ FOLDER STRUCTURE (Complete Reference)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+portfolio-project/
+│
+├── backend/                        ← Express REST API (Node.js)
+│   ├── config/
+│   │   └── db.js                   ← MongoDB connection setup
+│   ├── middleware/
+│   │   ├── auth.js                 ← JWT token verification
+│   │   └── errorHandler.js         ← Global error handling
+│   ├── models/
+│   │   ├── Admin.js                ← Admin user (hashed password)
+│   │   ├── Project.js              ← Portfolio projects schema
+│   │   ├── Achievement.js          ← Awards, certs, publications
+│   │   └── Workshop.js             ← Workshops + Contact forms
+│   ├── routes/
+│   │   ├── auth.js                 ← /api/auth/login, /me, /logout
+│   │   ├── projects.js             ← /api/projects (CRUD)
+│   │   ├── achievements.js         ← /api/achievements + /api/workshops
+│   │   └── contacts.js             ← /api/contact (form + admin view)
+│   ├── scripts/
+│   │   └── seed.js                 ← Loads sample data into DB
+│   ├── tests/
+│   │   └── api.test.js             ← Jest API tests
+│   ├── server.js                   ← ⭐ Main entry point
+│   ├── package.json                ← Backend dependencies
+│   ├── .env                        ← ⭐ Your config (edit MONGO_URI)
+│   └── .env.example                ← Template reference
+│
+├── frontend/                       ← React App (Vite)
+│   ├── src/
+│   │   ├── App.jsx                 ← ⭐ Entire portfolio UI (all sections)
+│   │   ├── main.jsx                ← React app entry point
+│   │   ├── services/
+│   │   │   └── api.js              ← All API calls (axios)
+│   │   └── hooks/
+│   │       └── useAuth.js          ← Admin login/logout hook
+│   ├── index.html                  ← HTML shell with SEO meta tags
+│   ├── vite.config.js              ← Vite build configuration
+│   ├── package.json                ← Frontend dependencies
+│   └── .env.local                  ← API URL config (pre-set)
+│
+├── package.json                    ← Root helper scripts
+├── .gitignore                      ← Git ignore rules
+├── README.md                       ← Full documentation
+├── DEPLOYMENT.md                   ← Deploy to Vercel/Render guide
+└── SETUP_GUIDE.txt                 ← This file
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ COMMON ERRORS & FIXES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+❌ Error: MongoServerError: bad auth / Authentication failed
+   Fix: Your MONGO_URI password is wrong. Re-copy from Atlas.
+        Make sure there are no < > brackets left in the URI.
+
+❌ Error: EADDRINUSE: address already in use :::5000
+   Fix: Something else is using port 5000.
+        Open backend/.env → change PORT=5000 to PORT=5001
+        Open frontend/.env.local → change to VITE_API_URL=http://localhost:5001/api
+
+❌ Error: Cannot find module 'express' (or any module)
+   Fix: You haven't installed dependencies yet.
+        In the backend folder: npm install
+        In the frontend folder: npm install
+
+❌ Frontend loads but shows no data / API error
+   Fix: Make sure the BACKEND terminal is also running (npm run dev in backend/)
+        Check: http://localhost:5000/health should show { "status": "healthy" }
+
+❌ seed.js: MongoNetworkTimeoutError
+   Fix: Your IP isn't whitelisted in MongoDB Atlas.
+        Atlas → Security → Network Access → Add IP Address → Add Current IP
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ QUICK COMMAND REFERENCE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Action                     │  Folder    │  Command
+  ─────────────────────────────────────────────────
+  Install backend packages   │  backend/  │  npm install
+  Install frontend packages  │  frontend/ │  npm install
+  Seed the database          │  backend/  │  node scripts/seed.js
+  Start backend server       │  backend/  │  npm run dev
+  Start frontend dev server  │  frontend/ │  npm run dev
+  Run backend tests          │  backend/  │  npm test
+  Build frontend for deploy  │  frontend/ │  npm run build
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ ADMIN LOGIN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  URL:       http://localhost:3000  → click "Admin" in navbar
+  Email:     admin@portfolio.dev
+  Password:  Admin@123
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
