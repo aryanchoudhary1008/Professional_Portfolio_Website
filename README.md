@@ -1,4 +1,4 @@
-# Dr. Arjun Mehta — Professional Portfolio Website
+# Professional Portfolio Website
 ### Full-Stack Production Application · Built with Design Thinking
 
 ---
